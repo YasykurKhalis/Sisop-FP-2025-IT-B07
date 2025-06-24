@@ -18,7 +18,7 @@ Nama | NRP
 --- | ---
 Mochkamad Mualana Syafaat | 5027241021
 Alnico Virendra Kitaro Diaz | 5027241081
-... | 5027241xxx
+Yasykur Khalis Jati Maulana Yuwono | 5027241112
 ... | 5027241xxx
 
 ## Deskripsi Soal
