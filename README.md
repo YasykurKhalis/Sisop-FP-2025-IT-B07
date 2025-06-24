@@ -233,8 +233,10 @@ int main(int argc, char *argv[]) {
 }
 ```
 -  Ini adalah struktur utama yang mendefinisikan fungsi-fungsi yang akan dijalankan oleh FUSE. Fungsi ```main()``` memulai sistem filesystem FUSE dengan operasi yang telah didefinisikan di atas.
+
 **Video Menjalankan Program**
-...
+
+https://github.com/user-attachments/assets/3980bede-9325-4264-a70c-09a55450ee99
 
 ## Daftar Pustaka
 
