@@ -17,7 +17,7 @@
 Nama | NRP
 --- | ---
 Mochkamad Mualana Syafaat | 5027241021
-... | 5027241xxx
+Alnico Virendra Kitaro Diaz | 5027241081
 ... | 5027241xxx
 ... | 5027241xxx
 
@@ -38,26 +38,191 @@ Struktur repository:
 
 ## Pengerjaan
 
-> Insert poin soal...
+> Buatlah sebuah program FUSE yang dapat mount sebuah directory. Saat sebuah file text di directory tersebut dibuka, maka isi dari file tersebut akan dibalik per baris.
 
-**Teori**
+# 🔄 FUSE Reverse Filesystem
 
-...
+Filesystem virtual berbasis FUSE yang menampilkan isi file dari folder sumber dengan transformasi **setiap baris dibalik urutan karakternya**. Cocok untuk eksperimen sistem berkas custom dan edukasi FUSE.
 
-**Solusi**
+---
 
-...
+## 📚 Library
 
-> Insert poin soal...
+```c
+#include <fuse.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <limits.h>
+```
 
-**Teori**
+## 🔧 Fungsi reverse_lines
+```c
+char *reverse_lines(const char *input) {
+    char *copy = strdup(input);                      // Duplikasi input string
+    if (!copy) return NULL;
 
-...
+    char *result = malloc(strlen(input) * 2 + 1);     // Alokasikan buffer untuk hasil
+    if (!result) {
+        free(copy);
+        return NULL;
+    }
+    result[0] = '\0';
 
-**Solusi**
+    char *line = strtok(copy, "\n");                 // Ambil baris per baris
+    while (line != NULL) {
+        size_t len = strlen(line);
+        for (int i = len - 1; i >= 0; --i) {
+            strncat(result, &line[i], 1);            // Balik karakter
+        }
+        strcat(result, "\n");                        // Tambahkan newline
+        line = strtok(NULL, "\n");
+    }
 
-...
+    free(copy);
+    return result;
+}
+```
+- Fungsi ini digunakan untuk membalik urutan karakter pada setiap baris dari string input
+  
+Misal
+```
+hello\nworld
+```
+Menjadi
+```
+olleh\ndlrow
+```
 
+## 📂 Fungsi ```fullpath```
+
+```c
+void fullpath(char fpath[PATH_MAX], const char *path) {
+    snprintf(fpath, PATH_MAX, "%s%s", source_dir, path);
+}
+```
+-  Fungsi ini menggabungkan path dari direktori sumber (```source_dir```)dengan path yang diminta oleh FUSE. Hasilnya adalah path absolut file asli.
+- Misalnya
+
+jika
+```
+path = "/notes.txt"
+```
+maka hasilnya adalah
+```
+./source/notes.txt
+```
+
+## 📌 Fungsi ```reverse_getattr()```
+```c
+static int reverse_getattr(const char *path, struct stat *stbuf)
+```
+-Mendapatkan atribut file (ukuran, waktu modifikasi, dll).
+-Menggunakan ```lstat()```untuk membaca atribut file sebenarnya di ```source_dir```.
+
+
+## 📁 Fungsi ```reverse_readdir```
+```c
+int reverse_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
+    DIR *dp;
+    struct dirent *de;
+    char fpath[PATH_MAX];
+
+    fullpath(fpath, path);
+    dp = opendir(fpath);
+    if (!dp) return -errno;
+
+    filler(buf, ".", NULL, 0);
+    filler(buf, "..", NULL, 0);
+
+    while ((de = readdir(dp)) != NULL) {
+        filler(buf, de->d_name, NULL, 0);
+    }
+
+    closedir(dp);
+    return 0;
+}
+```
+-  Fungsi ini membaca isi direktori dan mengisi hasilnya ke dalam struktur yang ditampilkan oleh FUSE di folder mount point.
+-  Menggunakan ```opendir()``` dan ```readdir()``` untuk membaca direktori asli (```source_dir```).
+- Kemudian mengisi buffer dengan nama file dan folder menggunakan ```filler()```.
+
+
+## 📖 Fungsi ```reverse_open```
+```c
+int reverse_open(const char *path, struct fuse_file_info *fi) {
+    char fpath[PATH_MAX];
+    fullpath(fpath, path);
+    int fd = open(fpath, O_RDONLY);
+    if (fd == -1) return -errno;
+    close(fd);
+    return 0;
+}
+```
+- Fungsi ini mengecek apakah file bisa dibuka (read-only). Tidak menyimpan descriptor karena ```read()``` membukanya lagi.
+
+## 📄 Fungsi ```reverse_read```
+```c
+int reverse_read(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info *fi) {
+    char fpath[PATH_MAX];
+    fullpath(fpath, path);
+
+    FILE *fp = fopen(fpath, "r");
+    if (!fp) return -errno;
+
+    fseek(fp, 0, SEEK_END);
+    long fsize = ftell(fp);
+    rewind(fp);
+
+    char *content = malloc(fsize + 1);
+    if (!content) {
+        fclose(fp);
+        return -ENOMEM;
+    }
+
+    fread(content, 1, fsize, fp);
+    content[fsize] = '\0';
+    fclose(fp);
+
+    char *reversed = reverse_lines(content);
+    free(content);
+    if (!reversed) return -ENOMEM;
+
+    size_t len = strlen(reversed);
+    if (offset < len) {
+        if (offset + size > len)
+            size = len - offset;
+        memcpy(buf, reversed + offset, size);
+    } else {
+        size = 0;
+    }
+
+    free(reversed);
+    return size;
+}
+```
+- Fungsi ini membaca seluruh isi file dari path asli, membalik setiap baris dengan ```reverse_lines()```, lalu menyalin bagian tertentu (sesuai ```offset``` dan ```size```) ke buffer yang akan dibaca oleh aplikasi pengguna.
+
+## 🚀 Struktur FUSE dan ```main()```
+```c
+static struct fuse_operations reverse_oper = {
+    .getattr = reverse_getattr,
+    .readdir = reverse_readdir,
+    .open    = reverse_open,
+    .read    = reverse_read,
+};
+
+int main(int argc, char *argv[]) {
+    return fuse_main(argc, argv, &reverse_oper, NULL);
+}
+```
+-  Ini adalah struktur utama yang mendefinisikan fungsi-fungsi yang akan dijalankan oleh FUSE. Fungsi ```main()``` memulai sistem filesystem FUSE dengan operasi yang telah didefinisikan di atas.
 **Video Menjalankan Program**
 ...
 
