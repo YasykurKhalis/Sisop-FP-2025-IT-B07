@@ -15,15 +15,13 @@
 #define PATH_MAX 4096
 #endif
 
-static const char *source_dir = "./source";  // direktori asli
+static const char *source_dir = "./source";
 
-// Fungsi membalik string per baris
 char *reverse_lines(const char *input) {
     char *copy = strdup(input);
     if (!copy) return NULL;
 
-    // Alokasikan buffer cukup besar
-    char *result = malloc(strlen(input) * 2 + 1);  // lebih longgar untuk jaga-jaga
+    char *result = malloc(strlen(input) * 2 + 1);
     if (!result) {
         free(copy);
         return NULL;
@@ -44,12 +42,10 @@ char *reverse_lines(const char *input) {
     return result;
 }
 
-// Mendapatkan path sebenarnya
 static void fullpath(char fpath[PATH_MAX], const char *path) {
     snprintf(fpath, PATH_MAX, "%s%s", source_dir, path);
 }
 
-// getattr
 static int reverse_getattr(const char *path, struct stat *stbuf) {
     char fpath[PATH_MAX];
     fullpath(fpath, path);
@@ -58,7 +54,6 @@ static int reverse_getattr(const char *path, struct stat *stbuf) {
     return 0;
 }
 
-// readdir
 static int reverse_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
                            off_t offset, struct fuse_file_info *fi) {
     DIR *dp;
@@ -81,7 +76,6 @@ static int reverse_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
     return 0;
 }
 
-// open
 static int reverse_open(const char *path, struct fuse_file_info *fi) {
     char fpath[PATH_MAX];
     fullpath(fpath, path);
@@ -94,7 +88,6 @@ static int reverse_open(const char *path, struct fuse_file_info *fi) {
     return 0;
 }
 
-// read
 static int reverse_read(const char *path, char *buf, size_t size, off_t offset,
                         struct fuse_file_info *fi) {
     char fpath[PATH_MAX];
