@@ -28,8 +28,6 @@ Buatlah sebuah program FUSE yang dapat mount sebuah directory. Saat sebuah file 
 
 ### Catatan
 
-> Insert catatan dari pengerjaan kalian... (contoh dibawah) // hapus line ini
-
 Struktur repository:
 ```
 ├── reverse-fs/                # Hasil compile code
