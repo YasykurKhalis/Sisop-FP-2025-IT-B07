@@ -134,8 +134,8 @@ maka hasilnya adalah
 ```c
 static int reverse_getattr(const char *path, struct stat *stbuf)
 ```
--Mendapatkan atribut file (ukuran, waktu modifikasi, dll).
--Menggunakan ```lstat()```untuk membaca atribut file sebenarnya di ```source_dir```.
+- Mendapatkan atribut file (ukuran, waktu modifikasi, dll).
+- Menggunakan ```lstat()```untuk membaca atribut file sebenarnya di ```source_dir```.
 
 
 ## 📁 Fungsi ```reverse_readdir```
