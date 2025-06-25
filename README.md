@@ -322,16 +322,6 @@ char *reverse_lines(const char *input) {
 }
 ```
 **Video Menjalankan Program**
-...
-
-## Daftar Pustaka
-
-Sitasi 1
-Sitasi 2
-Sitasi 3
-
-
-**Video Menjalankan Program**
 
 https://github.com/user-attachments/assets/3980bede-9325-4264-a70c-09a55450ee99
 
