@@ -30,7 +30,10 @@ Buatlah sebuah program FUSE yang dapat mount sebuah directory. Saat sebuah file 
 
 Struktur repository:
 ```
-
+├── source/
+│   └── tes.txt
+├── reverse_fs
+└── reverse_fs.c
 ```
 
 
@@ -158,6 +161,4 @@ https://github.com/user-attachments/assets/3980bede-9325-4264-a70c-09a55450ee99
 ## Daftar Pustaka
 
 1. Arslan, A. N. (2008). An algorithm with linear expected running time for string editing with substitutions and substring reversals. *Information Processing Letters, 106*(5), 213–218. https://doi.org/10.1016/j.ipl.2007.11.017
-
-Sitasi 2
-Sitasi 3
+2. Nurmi, J., & Rantala, M. (2008). A configurable Linux file system for multimedia data. In Proceedings of the Third International Conference on Software and Data Technologies, 127–134. SciTePress. https://www.scitepress.org/Papers/2008/19371/19371.pdf
