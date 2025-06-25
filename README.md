@@ -41,7 +41,7 @@ Struktur repository:
 
 ## Pengerjaan
 
-program FUSE 
+#### program FUSE 
 
 **Teori**
 
@@ -78,8 +78,7 @@ int main(int argc, char *argv[]) {
 
 ```
 
-Saat file teks dibuka, baca isi file dan balik urutan setiap baris.
-
+####  Fungsi Reverse Text
 **Teori**
 
 Given two strings X and Y over an alphabet Σ where
