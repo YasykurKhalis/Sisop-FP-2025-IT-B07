@@ -30,15 +30,15 @@ Buatlah sebuah program FUSE yang dapat mount sebuah directory. Saat sebuah file 
 
 Struktur repository:
 ```
-├── reverse-fs/                # Hasil compile code
+├── reverse-fs/                
 │
-├── reverse_fs.c               # Source code
+├── reverse_fs.c              
 │
-├── source/                    # Direktori sumber file asli (input file)
-│   └── test.txt               # Contoh file teks
+├── source/                    
+│   └── test.txt              
 │
-├── mount/                     # Mount point FUSE
-│   (kosong, dibuat saat runtime)
+├── mount/                   
+│   
 │
 ├── README.md                  # Laporan
 └── .gitignore                 # File/folder yang tidak perlu di-push
