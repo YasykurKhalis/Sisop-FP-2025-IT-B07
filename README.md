@@ -327,6 +327,7 @@ https://github.com/user-attachments/assets/3980bede-9325-4264-a70c-09a55450ee99
 
 ## Daftar Pustaka
 
-Sitasi 1
+1. Arslan, A. N. (2008). An algorithm with linear expected running time for string editing with substitutions and substring reversals. *Information Processing Letters, 106*(5), 213–218. https://doi.org/10.1016/j.ipl.2007.12.001
+
 Sitasi 2
 Sitasi 3
