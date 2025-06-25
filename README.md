@@ -62,8 +62,18 @@ and write.
 Furthermore, there are some callback functions im
 
 **Solusi**
+```
+static struct fuse_operations reverse_oper = {
+    .getattr = reverse_getattr,
+    .readdir = reverse_readdir,
+    .open    = reverse_open,
+    .read    = reverse_read,
+};
 
-...
+int main(int argc, char *argv[]) {
+    return fuse_main(argc, argv, &reverse_oper, NULL);
+
+```
 
 Saat file teks dibuka, baca isi file dan balik urutan setiap baris.
 
