@@ -41,7 +41,7 @@ Struktur repository:
 │   
 │
 ├── README.md                  # Laporan
-└── .gitignore                 # File/folder yang tidak perlu di-push
+└── 
 ```
 
 ## Pengerjaan
@@ -231,6 +231,39 @@ int main(int argc, char *argv[]) {
 }
 ```
 -  Ini adalah struktur utama yang mendefinisikan fungsi-fungsi yang akan dijalankan oleh FUSE. Fungsi ```main()``` memulai sistem filesystem FUSE dengan operasi yang telah didefinisikan di atas.
+
+
+## Pengerjaan
+
+> Insert poin soal...
+
+**Teori**
+
+...
+
+**Solusi**
+
+...
+
+> Insert poin soal...
+
+**Teori**
+
+...
+
+**Solusi**
+
+...
+
+**Video Menjalankan Program**
+...
+
+## Daftar Pustaka
+
+Sitasi 1
+Sitasi 2
+Sitasi 3
+
 
 **Video Menjalankan Program**
 
