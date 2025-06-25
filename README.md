@@ -38,11 +38,28 @@ Struktur repository:
 
 ## Pengerjaan
 
-program FUSE yang dapat mount sebuah directory
+program FUSE 
 
 **Teori**
 
-...
+A MUSIC FILE SYSTEM IN
+USERSPACE
+The main idea of this work is the managing of music information by a file system tree, using the FUSE
+library. It avoids the necessity of working in kernel
+space and we get rid of the portability problems between the various releases of the Linux kernel. Instead, we can use a simple API to implement a file
+system with a series of callbacks depending on the operations to perform. FUSE appears to the kernel like
+a classical file system, but its behaviour is defined in
+user space. Implementing such file system requires
+some extra cost in terms of computation. Anyway,
+it’s a fair price to pay for the advantages it offers: all
+meta information of the multimedia files are available
+for access by shell tools or even by graphical interfaces (file browsers).
+The use of FUSE library in the project is limited to the
+implementation of some of the callback functions defined in the struct fuse operations. These callback functions are self explaining for a Linux user, as
+getattr, read, readdir, readlink, mknod, mkdir, unlink,
+rmdir, symlink, rename, link, chmod, chown, truncate
+and write.
+Furthermore, there are some callback functions im
 
 **Solusi**
 
