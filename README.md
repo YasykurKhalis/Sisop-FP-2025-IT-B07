@@ -295,8 +295,32 @@ by Yi, and f (k) is the cost of a reversal of length k.
 
 **Solusi**
 
-...
+```c
+char *reverse_lines(const char *input) {
+    char *copy = strdup(input);                      // Duplikasi input string
+    if (!copy) return NULL;
 
+    char *result = malloc(strlen(input) * 2 + 1);     // Alokasikan buffer untuk hasil
+    if (!result) {
+        free(copy);
+        return NULL;
+    }
+    result[0] = '\0';
+
+    char *line = strtok(copy, "\n");                 // Ambil baris per baris
+    while (line != NULL) {
+        size_t len = strlen(line);
+        for (int i = len - 1; i >= 0; --i) {
+            strncat(result, &line[i], 1);            // Balik karakter
+        }
+        strcat(result, "\n");                        // Tambahkan newline
+        line = strtok(NULL, "\n");
+    }
+
+    free(copy);
+    return result;
+}
+```
 **Video Menjalankan Program**
 ...
 
