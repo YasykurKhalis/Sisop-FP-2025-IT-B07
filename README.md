@@ -62,7 +62,7 @@ and write.
 Furthermore, there are some callback functions im
 
 **Solusi**
-```
+```c
 static struct fuse_operations reverse_oper = {
     .getattr = reverse_getattr,
     .readdir = reverse_readdir,
