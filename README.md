@@ -65,6 +65,139 @@ and write.
 Furthermore, there are some callback functions im
 
 **Solusi**
+
+### 1. `getattr`
+
+Mengambil metadata file, serupa dengan `stat()`.
+
+```c
+static int reverse_getattr(const char *path, struct stat *stbuf) {
+    char fpath[PATH_MAX];
+    fullpath(fpath, path);
+    if (lstat(fpath, stbuf) == -1)
+        return -errno;
+    return 0;
+}
+```
+
+* **Fungsi:** Mengisi `stbuf` dengan atribut file (ukuran, mode, timestamp, dll).
+* **Penanganan Error:** Mengembalikan nilai negatif `errno` jika `lstat()` gagal.
+
+---
+
+### 2. `readdir`
+
+Mendaftarkan entri-entri dalam direktori.
+
+```c
+static int reverse_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
+                           off_t offset, struct fuse_file_info *fi) {
+    DIR *dp;
+    struct dirent *de;
+    char fpath[PATH_MAX];
+
+    fullpath(fpath, path);
+    dp = opendir(fpath);
+    if (dp == NULL)
+        return -errno;
+
+    filler(buf, ".", NULL, 0);
+    filler(buf, "..", NULL, 0);
+
+    while ((de = readdir(dp)) != NULL) {
+        filler(buf, de->d_name, NULL, 0);
+    }
+
+    closedir(dp);
+    return 0;
+}
+```
+
+* **`opendir`:** Membuka direktori nyata di bawah `./source`.
+* **`filler`:** Menambahkan setiap entri (termasuk `.` dan `..`) ke listing sistem file virtual.
+
+---
+
+### 3. `open`
+
+Memeriksa apakah file dapat dibuka untuk dibaca.
+
+```c
+static int reverse_open(const char *path, struct fuse_file_info *fi) {
+    char fpath[PATH_MAX];
+    fullpath(fpath, path);
+
+    int fd = open(fpath, O_RDONLY);
+    if (fd == -1)
+        return -errno;
+
+    close(fd);
+    return 0;
+}
+```
+
+* **Tujuan:** Memastikan file dapat dibuka dengan mode `O_RDONLY`.
+* **Tutup Segera:** Pembacaan konten sebenarnya dilakukan di callback `read()`.
+
+---
+
+### 4. `read`
+
+Membaca seluruh isi file, membalik setiap baris, dan mengembalikan potongan yang diminta.
+
+```c
+static int reverse_read(const char *path, char *buf, size_t size, off_t offset,
+                        struct fuse_file_info *fi) {
+    char fpath[PATH_MAX];
+    fullpath(fpath, path);
+
+    FILE *fp = fopen(fpath, "r");
+    if (fp == NULL)
+        return -errno;
+
+    fseek(fp, 0, SEEK_END);
+    long fsize = ftell(fp);
+    rewind(fp);
+
+    char *content = malloc(fsize + 1);
+    if (!content) {
+        fclose(fp);
+        return -ENOMEM;
+    }
+
+    fread(content, 1, fsize, fp);
+    content[fsize] = '\0';
+    fclose(fp);
+
+    char *reversed = reverse_lines(content);
+    free(content);
+    if (!reversed)
+        return -ENOMEM;
+
+    size_t len = strlen(reversed);
+    if (offset < len) {
+        if (offset + size > len)
+            size = len - offset;
+        memcpy(buf, reversed + offset, size);
+    } else {
+        size = 0;
+    }
+
+    free(reversed);
+    return size;
+}
+```
+
+* **Baca Seluruh File:** Membaca semua byte file ke buffer `content`.
+* **Pembalikan Baris:** Memanggil `reverse_lines()` untuk membalik setiap baris.
+* **Offset & Size:** Menyesuaikan `offset` dan `size` agar hanya bagian yang diminta yang dikembalikan.
+
+---
+
+### 5. `fuse_operations` & `main`
+
+Mendaftarkan callback dan memulai loop FUSE.
+
 ```c
 static struct fuse_operations reverse_oper = {
     .getattr = reverse_getattr,
@@ -75,8 +208,12 @@ static struct fuse_operations reverse_oper = {
 
 int main(int argc, char *argv[]) {
     return fuse_main(argc, argv, &reverse_oper, NULL);
-
+}
 ```
+
+* **`reverse_oper`:** Struktur yang memetakan operasi filesystem ke fungsi kita.
+* **`fuse_main`:** Inisialisasi FUSE, parsing argumen (mount point, opsi), lalu menunggu dan memproses permintaan.
+
 
 ####  Fungsi Reverse Text
 **Teori**
