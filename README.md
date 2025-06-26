@@ -268,6 +268,7 @@ reverse_lines
 
 Membalik setiap baris teks dalam buffer input.
 
+```c
 char *reverse_lines(const char *input) {
     char *copy = strdup(input);
     if (!copy) return NULL;
@@ -295,7 +296,7 @@ char *reverse_lines(const char *input) {
     free(copy);
     return result;
 }
-
+```
 strdup(input): Menggandakan string input karena strtok memodifikasi string.
 
 malloc(strlen(input) * 2 + 1): Mengalokasikan buffer result cukup besar untuk setiap karakter dibalik plus newline.
