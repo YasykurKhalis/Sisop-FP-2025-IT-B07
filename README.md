@@ -264,32 +264,54 @@ by Yi, and f (k) is the cost of a reversal of length k.
 
 **Solusi**
 
-```c
+reverse_lines
+
+Membalik setiap baris teks dalam buffer input.
+
 char *reverse_lines(const char *input) {
-    char *copy = strdup(input);                      // Duplikasi input string
+    char *copy = strdup(input);
     if (!copy) return NULL;
 
-    char *result = malloc(strlen(input) * 2 + 1);     // Alokasikan buffer untuk hasil
+    char *result = malloc(strlen(input) * 2 + 1);
     if (!result) {
         free(copy);
         return NULL;
     }
-    result[0] = '\0';
+    result[0] = '�';
 
-    char *line = strtok(copy, "\n");                 // Ambil baris per baris
+    char *line = strtok(copy, "
+");
     while (line != NULL) {
         size_t len = strlen(line);
         for (int i = len - 1; i >= 0; --i) {
-            strncat(result, &line[i], 1);            // Balik karakter
+            strncat(result, &line[i], 1);
         }
-        strcat(result, "\n");                        // Tambahkan newline
-        line = strtok(NULL, "\n");
+        strcat(result, "
+");
+        line = strtok(NULL, "
+");
     }
 
     free(copy);
     return result;
 }
-```
+
+strdup(input): Menggandakan string input karena strtok memodifikasi string.
+
+malloc(strlen(input) * 2 + 1): Mengalokasikan buffer result cukup besar untuk setiap karakter dibalik plus newline.
+
+strtok(copy, "
+"): Memecah string ke baris per baris.
+
+Loop membalik:
+
+Iterasi dari karakter terakhir hingga pertama, menambahkan satu per satu ke result menggunakan strncat.
+
+Setelah membalik satu baris, tambahkan newline.
+
+Return: Pointer ke string hasil balik; pemanggil wajib free().
+
+
 **Video Menjalankan Program**
 
 https://github.com/user-attachments/assets/3980bede-9325-4264-a70c-09a55450ee99
