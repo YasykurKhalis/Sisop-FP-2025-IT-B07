@@ -45,8 +45,6 @@ Struktur repository:
 
 **Teori**
 
-A MUSIC FILE SYSTEM IN
-USERSPACE
 The main idea of this work is the managing of music information by a file system tree, using the FUSE
 library. It avoids the necessity of working in kernel
 space and we get rid of the portability problems between the various releases of the Linux kernel. Instead, we can use a simple API to implement a file
