@@ -45,6 +45,26 @@ Struktur repository:
 
 **Teori**
 
+We now discuss several important FUSE implementation details: the user-kernel protocol, library and
+API levels, in-kernel FUSE queues, splicing, multithreading, and write-back cache.
+
+| **Group (#)**     | **Request Types**                                                                 |
+|-------------------|-----------------------------------------------------------------------------------|
+| **Special (3)**   | `INIT`, `DESTROY`, `INTERRUPT`                                                    |
+| **Metadata (14)** | `LOOKUP`, `FORGET`, `BATCH_FORGET`, `CREATE`, `UNLINK`, `LINK`, `RENAME`, `RENAME2`, `OPEN`, `RELEASE`, `STATFS`, `FSYNC`, `FLUSH`, `ACCESS` |
+| **Data (2)**      | `READ`, `WRITE`                                                                   |
+| **Attributes (2)**| `GETATTR`, `SETATTR`                                                              |
+| **Extended Attributes (4)** | `SETXATTR`, `GETXATTR`, `LISTXATTR`, `REMOVEXATTR`                    |
+| **Symlinks (2)**  | `SYMLINK`, `READLINK`                                                             |
+| **Directory (7)** | `MKDIR`, `RMDIR`, `OPENDIR`, `RELEASEDIR`, `READDIR`, `READDIRPLUS`, `FSYNCDIR`  |
+| **Locking (3)**   | `GETLK`, `SETLK`, `SETLKW`                                                        |
+| **Misc (6)**      | `BMAP`, `FALLOCATE`, `MKNOD`, `IOCTL`, `POLL`, `NOTIFY_REPLY`                     |
+
+
+
+
+**Teori**
+
 The main idea of this work is the managing of music information by a file system tree, using the FUSE
 library. It avoids the necessity of working in kernel
 space and we get rid of the portability problems between the various releases of the Linux kernel. Instead, we can use a simple API to implement a file
