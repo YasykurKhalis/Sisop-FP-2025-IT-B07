@@ -62,6 +62,8 @@ API levels, in-kernel FUSE queues, splicing, multithreading, and write-back cach
 
 
 
+ (Tarasov et al., 2017)
+
 **Solusi**
 
 
@@ -135,7 +137,7 @@ Figure 3 also shows the breakdown of requests by
 queues. By default, READ, RELEASE, and INIT are asynchronous; they are added to the background queue first.
 All other requests are synchronous and are added to
 pending queue directly. In read workloads, only READ
-requests are generated in large numbers. Thus, we discuss in detail only READ requests for these workloads
+requests are generated in large numbers. Thus, we discuss in detail only READ requests for these workloads (Tarasov et al., 2017)
 
 
 
