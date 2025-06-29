@@ -62,6 +62,63 @@ API levels, in-kernel FUSE queues, splicing, multithreading, and write-back cach
 
 
 
+**Solusi**
+
+
+### 1. `getattr`
+
+Mengambil metadata file, serupa dengan `stat()`.
+
+```c
+static int reverse_getattr(const char *path, struct stat *stbuf) {
+    char fpath[PATH_MAX];
+    fullpath(fpath, path);
+    if (lstat(fpath, stbuf) == -1)
+        return -errno;
+    return 0;
+}
+```
+
+* **Fungsi:** Mengisi `stbuf` dengan atribut file (ukuran, mode, timestamp, dll).
+* **Penanganan Error:** Mengembalikan nilai negatif `errno` jika `lstat()` gagal.
+
+---
+
+### 2. `readdir`
+
+Mendaftarkan entri-entri dalam direktori.
+
+```c
+static int reverse_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
+                           off_t offset, struct fuse_file_info *fi) {
+    DIR *dp;
+    struct dirent *de;
+    char fpath[PATH_MAX];
+
+    fullpath(fpath, path);
+    dp = opendir(fpath);
+    if (dp == NULL)
+        return -errno;
+
+    filler(buf, ".", NULL, 0);
+    filler(buf, "..", NULL, 0);
+
+    while ((de = readdir(dp)) != NULL) {
+        filler(buf, de->d_name, NULL, 0);
+    }
+
+    closedir(dp);
+    return 0;
+}
+```
+
+* **`opendir`:** Membuka direktori nyata di bawah `./source`.
+* **`filler`:** Menambahkan setiap entri (termasuk `.` dan `..`) ke listing sistem file virtual.
+
+---
+
+
+
 
 **Teori**
 
