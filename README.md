@@ -64,6 +64,8 @@ rmdir, symlink, rename, link, chmod, chown, truncate
 and write.
 Furthermore, there are some callback functions im
 (Nurmi & Rantala, 2008). 
+
+
 **Solusi**
 
 ### 1. `getattr`
