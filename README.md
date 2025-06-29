@@ -63,7 +63,7 @@ getattr, read, readdir, readlink, mknod, mkdir, unlink,
 rmdir, symlink, rename, link, chmod, chown, truncate
 and write.
 Furthermore, there are some callback functions im
-
+(Nurmi & Rantala, 2008).
 **Solusi**
 
 ### 1. `getattr`
@@ -268,7 +268,7 @@ O(n+m) time and use
 +
 𝑚
 )
-Θ(n+m) space (they have to represent the strings). However, the practical constants on the time and space bounds for suffix trees often make their use unattractive compared to the other methods. Moreover, the situation sometimes arises that the pattern(s) will be given first and held fixed while the text varies. In those cases it is clearly superior to preprocess the pattern(s). So the question arises of whether we can solve those problems by building a suffix tree for the pattern(s), not the text. This is the reverse of the normal use of suffix trees. In Sections 5.3 and 7.2.1 we mentioned that such a reverse role was possible, thereby using suffix trees to achieve exactly the same time and space bounds (preprocessing versus search time and space) as in the Knuth–Morris–Pratt or Aho–Corasick methods. To explain this, we will develop a result due to Chang and Lawler [94], who solved a somewhat more general problem, called the matching statistics problem.
+Θ(n+m) space (they have to represent the strings). However, the practical constants on the time and space bounds for suffix trees often make their use unattractive compared to the other methods. Moreover, the situation sometimes arises that the pattern(s) will be given first and held fixed while the text varies. In those cases it is clearly superior to preprocess the pattern(s). So the question arises of whether we can solve those problems by building a suffix tree for the pattern(s), not the text. This is the reverse of the normal use of suffix trees. In Sections 5.3 and 7.2.1 we mentioned that such a reverse role was possible, thereby using suffix trees to achieve exactly the same time and space bounds (preprocessing versus search time and space) as in the Knuth–Morris–Pratt or Aho–Corasick methods. To explain this, we will develop a result due to Chang and Lawler [94], who solved a somewhat more general problem, called the matching statistics problem.(Gusfield, 1997).
 
 **Solusi**
 ```c
@@ -372,3 +372,4 @@ https://github.com/user-attachments/assets/3980bede-9325-4264-a70c-09a55450ee99
 
 1. Arslan, A. N. (2008). An algorithm with linear expected running time for string editing with substitutions and substring reversals. *Information Processing Letters, 106*(5), 213–218. https://doi.org/10.1016/j.ipl.2007.11.017
 2. Nurmi, J., & Rantala, M. (2008). A configurable Linux file system for multimedia data. In Proceedings of the Third International Conference on Software and Data Technologies, 127–134. SciTePress. https://www.scitepress.org/Papers/2008/19371/19371.pdf
+3.Gusfield, D. (1997). Algorithms on Strings, Trees, and Sequences: Computer Science and Computational Biology. Cambridge University Press. https://doi.org/10.1017/CBO9780511574931
