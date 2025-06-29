@@ -217,6 +217,63 @@ int main(int argc, char *argv[]) {
 
 ####  Fungsi Reverse Text
 **Teori**
+We have previously shown how suffix trees can be used to solve the exact matching problem with 
+𝑂
+(
+𝑚
+)
+O(m) preprocessing time and space (building a suffix tree of size 
+𝑂
+(
+𝑚
+)
+O(m) for the text 
+𝑇
+T) and 
+𝑂
+(
+𝑛
++
+𝑘
+)
+O(n+k) search time (where 
+𝑛
+n is the length of the pattern and 
+𝑘
+k is the number of occurrences). We have also seen how suffix trees are used to solve the exact set matching problem in the same time and space bounds (
+𝑛
+n is now the total size of all the patterns in the set). In contrast, the Knuth-Morris-Pratt (or Boyer–Moore) method preprocesses the pattern in 
+𝑂
+(
+𝑛
+)
+O(n) time and space, and then searches in 
+𝑂
+(
+𝑚
+)
+O(m) time. The Aho–Corasick method achieves similar bounds for the set matching problem.
+
+Asymptotically, the suffix tree methods that preprocess the text are as efficient as the methods that preprocess the pattern – both run in 
+𝑂
+(
+𝑛
++
+𝑚
+)
+O(n+m) time and use 
+Θ
+(
+𝑛
++
+𝑚
+)
+Θ(n+m) space (they have to represent the strings). However, the practical constants on the time and space bounds for suffix trees often make their use unattractive compared to the other methods. Moreover, the situation sometimes arises that the pattern(s) will be given first and held fixed while the text varies. In those cases it is clearly superior to preprocess the pattern(s). So the question arises of whether we can solve those problems by building a suffix tree for the pattern(s), not the text. This is the reverse of the normal use of suffix trees. In Sections 5.3 and 7.2.1 we mentioned that such a reverse role was possible, thereby using suffix trees to achieve exactly the same time and space bounds (preprocessing versus search time and space) as in the Knuth–Morris–Pratt or Aho–Corasick methods. To explain this, we will develop a result due to Chang and Lawler [94], who solved a somewhat more general problem, called the matching statistics problem.
+
+**Solusi**
+
+
+**Teori**
 
 Given two strings X and Y over an alphabet Σ where |Σ| ≥ 2, the edit distance is the total number of operations 
 needed to transform X into Y. A common model of string editing is based on insert, delete, and substitute 
