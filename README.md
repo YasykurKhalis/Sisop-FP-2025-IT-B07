@@ -251,7 +251,7 @@ Let Di denote the edit distance between X1..i and Y1..i in the model we study. W
     min (over k ∈ Ri) of Di−k + f(k)  
   }
 
-where D0 = 0, s(Xi, Yi) is the cost of replacing Xi by Yi, and f(k) is the cost of a reversal of length k.
+where D0 = 0, s(Xi, Yi) is the cost of replacing Xi by Yi, and f(k) is the cost of a reversal of length k. Arslan (2008)
 
 
 **Solusi**
