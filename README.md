@@ -218,49 +218,41 @@ int main(int argc, char *argv[]) {
 ####  Fungsi Reverse Text
 **Teori**
 
-Given two strings X and Y over an alphabet Σ where
-|Σ|  2, the edit distance is the total number of operations needed to transform X into Y . A common model
-of string editing is based on insert, delete, and substitute
-operations at character level. There are other models
-(see for example [3,6,12,5,13]). In general, multiple operations in the same position in X are not allowed. This
-is necessary to obtain a metric that can be efficiently
+Given two strings X and Y over an alphabet Σ where |Σ| ≥ 2, the edit distance is the total number of operations 
+needed to transform X into Y. A common model of string editing is based on insert, delete, and substitute 
+operations at character level. There are other models (see for example [3,6,12,5,13]). In general, multiple 
+operations in the same position in X are not allowed. This is necessary to obtain a metric that can be efficiently 
 computed.
-We denote by Si the ith symbol of string S, and by
-Si..j the substring of S starting at position i, and ending
-at position j . We use ←−
-S to denote the reverse of string
-S, i.e. ←−
-S = S|S| ...S2S1.
-In this paper, we consider the edit distance model
-introduced and studied first by Muthukrishnan and Sahinalp [9,10]. We say that substring X(i−k+1)..i of length
-k is reversible if X(i−k+1)..i = ←−−−−−−−− Y(i−k+1)..i. In this model,
-a character can be substituted for a character in X, and
-a substring of X can be reversed in a single step (if it is
-reversible). The assumption is that the string lengths are
-the same: |X|=|Y| = n, and multiple edit operations
-involving the same position in X are not allowed.
-Let Ri be the lengths of reversible substrings ending
-at position i. More formally,
-Ri =
-k
 
- X(i−k+1)..i = ←−−−−−−−− Y(i−k+1)..i,
-1  i  n, 1  k  i
-
-.
-If Ri contains k > 0 then by a single reversal,
-Y(i−k+1)..i can be obtained from X(i−k+1)..i. We consider all possible reversals ending at position i for
-every i.
-Let Di denote the edit distance between X1..i and
-Y1..i in the model we study. We can compute Di for all i,
-1  i  n, as follows:
-Di = min
-Di−1 + s(Xi, Yi), min
-k∈Ri
-Di−k + f (k)
-, (1)
-where D0 = 0, s(Xi, Yi) is the cost of replacing Xi
-by Yi, and f (k) is the cost of a reversal of length k.
+We denote by Si the ith symbol of string S, and by Si..j the substring of S starting at position i, and ending 
+at position j. We use ←S to denote the reverse of string S, i.e. ←S = S|S|...S2S1.
+
+In this paper, we consider the edit distance model introduced and studied first by Muthukrishnan and Sahinalp 
+[9,10]. We say that substring X(i−k+1)..i of length k is reversible if:
+
+  X(i−k+1)..i = ←Y(i−k+1)..i.
+
+In this model, a character can be substituted for a character in X, and a substring of X can be reversed in a 
+single step (if it is reversible). The assumption is that the string lengths are the same: |X| = |Y| = n, and 
+multiple edit operations involving the same position in X are not allowed.
+
+Let Ri be the lengths of reversible substrings ending at position i. More formally,
+
+  Ri = { k | X(i−k+1)..i = ←Y(i−k+1)..i, 1 ≤ i ≤ n, 1 ≤ k ≤ i }
+
+If Ri contains k > 0 then by a single reversal, Y(i−k+1)..i can be obtained from X(i−k+1)..i. We consider all 
+possible reversals ending at position i for every i.
+
+Let Di denote the edit distance between X1..i and Y1..i in the model we study. We can compute Di for all i,
+1 ≤ i ≤ n, as follows:
+
+  Di = min {  
+    Di−1 + s(Xi, Yi),  
+    min (over k ∈ Ri) of Di−k + f(k)  
+  }
+
+where D0 = 0, s(Xi, Yi) is the cost of replacing Xi by Yi, and f(k) is the cost of a reversal of length k.
+
 
 **Solusi**
 
