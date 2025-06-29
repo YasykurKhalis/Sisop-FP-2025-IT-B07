@@ -270,24 +270,22 @@ char *reverse_lines(const char *input) {
         free(copy);
         return NULL;
     }
-    result[0] = '�';
+    result[0] = '\0';
 
-    char *line = strtok(copy, "
-");
+    char *line = strtok(copy, "\n");
     while (line != NULL) {
         size_t len = strlen(line);
         for (int i = len - 1; i >= 0; --i) {
             strncat(result, &line[i], 1);
         }
-        strcat(result, "
-");
-        line = strtok(NULL, "
-");
+        strcat(result, "\n");
+        line = strtok(NULL, "\n");
     }
 
     free(copy);
     return result;
 }
+
 ```
 strdup(input): Menggandakan string input karena strtok memodifikasi string.
 
